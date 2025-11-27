@@ -182,8 +182,8 @@ class CharacterStats {
       readingTime.innerText = `${countdown--} seconds`;
 
       if (countdown == 30) {
-          console.log(getCharacters());
-          alphabetStats(letterDensity(graph));
+        console.log(getCharacters());
+        alphabetStats(letterDensity(graph));
       }
 
       if (countdown == 0) {
@@ -191,6 +191,12 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
+
+      if (countdown && this.resetUI.click())  {
+        countdown == 0;
+        clearInterval(timeout)
+      }
+
     }, 500);
   }
 

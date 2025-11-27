@@ -253,6 +253,12 @@ input[type="checkbox"] {
 
 .reset:active {
   transform: translateY(-4px);
+  background-color: var(--neutral-800);
+}
+
+.reset:hover {
+  background-color: var(--neutral-800);
+  transition: background-color 0.3s ease-in-out;
 }
 
 /*  boxes */
