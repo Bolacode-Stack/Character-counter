@@ -128,14 +128,13 @@ function letterDensity(object) {
   return object.sort((a, b) => a.count < b.count);
 }
 
-// alphabetStats(letterDensity(graph));
+alphabetStats(letterDensity(graph));
 
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
     icon.classList.add("fa-chevron-up", "rotate");
-    console.log(icon)
   } else if (wrapper.innerHTML !== "") {
     wrapper.style.height = "200px";
     icon.classList.remove("fa-chevron-up");
