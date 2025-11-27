@@ -1,4 +1,5 @@
 import Storage from "./storage.js";
+import { inputLength } from "./alphabet.js";
 import getCharacters from "./alphabet.js";
 import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
 
@@ -57,7 +58,6 @@ class CharacterStats {
     let input = event.target.value;
     totalCount += input.length;
     totalCharacters.innerText = totalCount;
-    console.log("Counts & Spaces =", totalCount, this.countSpace());
 
     localStorage.clear();
     let total = Storage.addCharactersToStorage(totalCount);
@@ -175,15 +175,30 @@ class CharacterStats {
     });
   }
 
-  readingTime() {
+  runApp() {
     let timeout,
       countdown = 60;
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
-    });
-    clearInterval(timeout);
-    if (countdown == 0) {
-      readingTime.innerText = "0 seconds";
+
+      if (countdown == 30) {
+          console.log(getCharacters());
+          alphabetStats(letterDensity(graph));
+      }
+
+      if (countdown == 0) {
+        clearInterval(timeout);
+        readingTime.innerText = "0 seconds";
+        this.resetUI();
+      }
+    }, 500);
+  }
+
+  countdown() {
+    if (inputLength() > 1) {
+      setTimeout(() => {
+        this.runApp();
+      }, 2500);
     }
   }
 
@@ -205,6 +220,7 @@ class CharacterStats {
     wordCount.innerText = "00";
     totalCharacters.innerText = "00";
     sentenceCount.innerText = "00";
+    readingTime.innerText = "1 minute";
     localStorage.removeItem("totalCharacters");
     localStorage.removeItem("wordCount");
     localStorage.removeItem("sentenceCount");
@@ -219,6 +235,7 @@ class CharacterStats {
   }
 
   render() {
+    this.countdown();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
