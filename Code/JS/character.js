@@ -1,4 +1,6 @@
 import Storage from "./storage.js";
+import getCharacters from "./alphabet.js";
+import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
 
 let output;
 const limitInput = document.querySelector(".limit-count");
@@ -10,18 +12,17 @@ const wordCount = document.querySelector(".word-count");
 const characterInput = document.querySelector(".character-input");
 const readingTime = document.querySelector(".reading-time");
 const wrapper = document.querySelector(".progress-wrapper");
-const toggle = document.querySelector(".more-less");
 const icon = document.querySelector(".fa-solid");
 const logo = document.querySelector("#logo");
 const body = document.querySelector("body");
 const theme = document.querySelector(".theme");
 let totalCharacters = document.querySelector("#total-characters");
 const statsParagraph = document.querySelector(".stats-paragraph");
+const resetUI = document.querySelector(".reset");
 
-let boolean = true;
-let zero = 0,
-  time = 50,
+let time = 50,
   second = 1000;
+let typing = true;
 let string = ["Analyze your text in real-time"];
 let regex = /\w+/g;
 
@@ -36,25 +37,6 @@ theme.addEventListener("click", (event) => {
   }
 });
 
-function getCharacters() {
-  let contents = [];
-  contents.push(characterInput.value);
-  return contents;
-}
-
-export function alphabetCounter(alphabet) {
-  let counted = zero;
-  let contents = getCharacters();
-  for (let string of contents) {
-    for (let i = 0; i < string.length; i++) {
-      if (string[i] == alphabet) {
-        counted += 1;
-      }
-    }
-  }
-  return counted;
-}
-
 class CharacterStats {
   constructor() {
     this.loadEventListeners();
@@ -67,14 +49,13 @@ class CharacterStats {
     characterInput.addEventListener("input", this.sentenceCount.bind(this));
 
     limitCheckbox.addEventListener("change", this.setLimit.bind(this));
+    resetUI.addEventListener("click", this.resetUI.bind(this));
   }
 
   totalCharacters(event) {
-    let totalCount = 0,
-      typing = true;
+    let totalCount = 0;
     let input = event.target.value;
     totalCount += input.length;
-
     totalCharacters.innerText = totalCount;
     console.log("Counts & Spaces =", totalCount, this.countSpace());
 
@@ -95,12 +76,10 @@ class CharacterStats {
     if (totalCount >= this.setLimit(event)) {
       limitReached.classList.add("show");
       characterInput.classList.add("limit");
-      console.log("Limit Reached");
     } else if (totalCount <= this.setLimit()) {
       limitReached.classList.remove("show");
       characterInput.classList.remove("limit");
     }
-    // this.resetUI()
   }
 
   setLimit() {
@@ -123,7 +102,6 @@ class CharacterStats {
       }
 
       let total = Storage.addWordsToStorage(count);
-      total = total.concat(count);
     });
   }
 
@@ -141,8 +119,7 @@ class CharacterStats {
         sentenceCount.innerText = value;
       }
 
-      let total = Storage.addSentenceToStorage(value)
-      let lastIndex = total[total.length - 1];
+      let total = Storage.addSentenceToStorage(value);
     });
   }
 
@@ -162,7 +139,6 @@ class CharacterStats {
     let total = Storage.getCharactersFromStorage();
     total.forEach((count) => {
       totalCharacters.innerText = count;
-      console.log(count);
 
       spaces.addEventListener("change", (event) => {
         let isChecked = event.target.checked ? true : false;
@@ -178,54 +154,77 @@ class CharacterStats {
       if (count >= this.setLimit(event)) {
         limitReached.classList.add("show");
         characterInput.classList.add("limit");
-        console.log("Limit Reached");
       } else if (count <= this.setLimit()) {
         limitReached.classList.remove("show");
         characterInput.classList.remove("limit");
       }
     });
   }
-   
-  displayWordCount()  {
+
+  displayWordCount() {
     let totalWords = Storage.getWordsFromStorage();
-    totalWords.forEach((word)  =>  {
+    totalWords.forEach((word) => {
       wordCount.innerText = word;
-    })
+    });
   }
 
-  displaySentenceCount()  {
+  displaySentenceCount() {
     let sentence = Storage.getSentenceFromStorage();
-    sentence.forEach((value)  =>  {
-      sentenceCount.innerText  = value;
-    })
+    sentence.forEach((value) => {
+      sentenceCount.innerText = value;
+    });
+  }
+
+  readingTime() {
+    let timeout,
+      countdown = 60;
+    timeout = setInterval(() => {
+      readingTime.innerText = `${countdown--} seconds`;
+    });
+    clearInterval(timeout);
+    if (countdown == 0) {
+      readingTime.innerText = "0 seconds";
+    }
   }
 
   resetUI() {
-    setTimeout(() => {
-      totalCharacters.innerText = "00";
-      localStorage.removeItem("totalCharacters");
-    }, 5000);
+    this.resetStats();
+    this.resetUtilities();
+    this.resetGraph();
+  }
+
+  resetUtilities() {
+    limitInput.value = "";
+    characterInput.value = "";
+    limitReached.classList.add("hide");
+    characterInput.classList.add("border");
+    characterInput.classList.remove("limit");
+  }
+
+  resetStats() {
+    wordCount.innerText = "00";
+    totalCharacters.innerText = "00";
+    sentenceCount.innerText = "00";
+    localStorage.removeItem("totalCharacters");
+    localStorage.removeItem("wordCount");
+    localStorage.removeItem("sentenceCount");
+  }
+
+  resetGraph() {
+    toggle.remove();
+    wrapper.innerHTML = "";
+    wrapper.style.height = "0px";
+    statsParagraph.classList.add("view");
+    wrapper.classList.remove("height-limit");
   }
 
   render() {
-    // this.resetUI();
     this.displayTotalCharacters();
-    this.displayWordCount()
-    this.displaySentenceCount()
+    this.displayWordCount();
+    this.displaySentenceCount();
   }
 }
 
 const stats = new CharacterStats();
 
-let timer,
-  countdown = 60;
-timer = setInterval(() => {
-  // readingTime.innerText = `${countdown--} seconds`;
-  if (countdown == zero) {
-    readingTime.innerText = "0 seconds";
-    // characterInput.value = "";
-    clearInterval(timer);
-  }
-}, time);
-
-export { icon, toggle, wrapper, statsParagraph };
+export { icon, wrapper, statsParagraph };

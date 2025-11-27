@@ -2,7 +2,7 @@ class Storage {
   static addCharactersToStorage(count) {
     let characters = this.getCharactersFromStorage();
 
-    characters.push(count);
+    characters.push(count)
     localStorage.setItem("totalCharacters", JSON.stringify(characters));
     return characters;
   }

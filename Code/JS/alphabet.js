@@ -1,5 +1,9 @@
-import { alphabetCounter } from "./character.js";
-import { icon, toggle, wrapper, statsParagraph } from "./character.js";
+const characterInput = document.querySelector(".character-input");
+const statsParagraph = document.querySelector(".stats-paragraph");
+const wrapper = document.querySelector(".progress-wrapper");
+const contents = document.querySelector(".contents");
+const toggle = document.querySelector(".see");
+const icon = document.querySelector(".fa-solid");
 
 let graph = [
   { alphabet: "a", count: 0 },
@@ -31,7 +35,7 @@ let graph = [
 ];
 
 let logout;
-function alphabetStats(object) {
+export function alphabetStats(object) {
   let bars = [];
 
   let filteredGraph = object.filter((character) => {
@@ -64,7 +68,7 @@ function alphabetStats(object) {
     progress.appendChild(bar);
 
     // (3)
-    let totalCount = object.reduce((combine, { count }) => {
+    let totalCount = filteredGraph.reduce((combine, { count }) => {
       return combine + count;
     }, 0);
 
@@ -89,16 +93,32 @@ function alphabetStats(object) {
       if (appended) {
         wrapper.classList.add("height-limit");
         statsParagraph.classList.add("hide");
+        contents.appendChild(toggle);
       } else if (!appended) {
         wrapper.classList.remove("height-limit");
         statsParagraph.classList.remove("hide");
       }
     }, 1500);
   });
+}
 
-  if (wrapper.innerHTML == "")  {
-    toggle.remove();
+export default function getCharacters() {
+  let contents = [];
+  contents.push(characterInput.value);
+  return contents;
+}
+
+function alphabetCounter(alphabet) {
+  let counted = 0;
+  let contents = getCharacters();
+  for (let string of contents) {
+    for (let i = 0; i < string.length; i++) {
+      if (string[i] == alphabet) {
+        counted += 1;
+      }
+    }
   }
+  return counted;
 }
 
 function letterDensity(object) {
@@ -114,13 +134,26 @@ function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
-    icon.classList.add("fa-chevron-up");
-  } else {
+    icon.classList.add("fa-chevron-up", "rotate");
+  } else if (wrapper.innerHTML !== "") {
+    wrapper.style.height = "200px";
     icon.classList.remove("fa-chevron-up");
     icon.classList.add("fa-chevron-down");
-    wrapper.style.height = "200px";
-    console.log(wrapper.style.height);
+  } else {
+    wrapper.style.height = "0px";
   }
 }
 
 toggle.addEventListener("click", toggleGraph);
+
+window.onload = () => {
+  toggle.remove();
+
+  if (characterInput.value.length > 20)  {
+    setTimeout(()  =>  {
+      alphabetStats(letterDensity(graph))
+    }, 2000)
+  }
+};
+
+export { graph, letterDensity , toggle };
