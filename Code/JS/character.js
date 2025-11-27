@@ -20,8 +20,10 @@ const theme = document.querySelector(".theme");
 let totalCharacters = document.querySelector("#total-characters");
 const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
+const notification = document.querySelector(".notification");
 
-let time = 50,
+let zero,
+  time = 50,
   second = 1000;
 let typing = true;
 let string = ["Analyze your text in real-time"];
@@ -175,36 +177,33 @@ class CharacterStats {
     });
   }
 
-  runApp() {
+  countdown() {
     let timeout,
       countdown = 60;
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
 
+      if (countdown == 55) {
+        notification.classList.add("show");
+      }
+
       if (countdown == 30) {
         console.log(getCharacters());
         alphabetStats(letterDensity(graph));
+        notification.classList.remove("show");
       }
 
-      if (countdown == 0) {
+      if (countdown == zero) {
         clearInterval(timeout);
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
-
-      if (countdown && this.resetUI.click())  {
-        countdown == 0;
-        clearInterval(timeout)
-      }
-
-    }, 500);
+    }, second);
   }
 
-  countdown() {
+  runApp() {
     if (inputLength() > 1) {
-      setTimeout(() => {
-        this.runApp();
-      }, 2500);
+      this.countdown();
     }
   }
 
@@ -216,6 +215,7 @@ class CharacterStats {
 
   resetUtilities() {
     limitInput.value = "";
+    notification.remove();
     characterInput.value = "";
     limitReached.classList.add("hide");
     characterInput.classList.add("border");
@@ -241,7 +241,7 @@ class CharacterStats {
   }
 
   render() {
-    this.countdown();
+    this.runApp();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
