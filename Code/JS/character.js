@@ -1,4 +1,5 @@
 import Storage from "./storage.js";
+import { inputLength } from "./alphabet.js";
 import getCharacters from "./alphabet.js";
 import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
 
@@ -19,12 +20,12 @@ const theme = document.querySelector(".theme");
 let totalCharacters = document.querySelector("#total-characters");
 const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
+const notification = document.querySelector(".notification");
 
-let time = 50,
-  second = 1000;
 let typing = true;
-let string = ["Analyze your text in real-time"];
+let second = 1000;
 let regex = /\w+/g;
+let string = ["Analyze your text in real-time"];
 
 theme.addEventListener("click", (event) => {
   body.classList.toggle("light-theme");
@@ -39,8 +40,9 @@ theme.addEventListener("click", (event) => {
 
 class CharacterStats {
   constructor() {
-    this.loadEventListeners();
     this.render();
+    this.runApp();
+    this.loadEventListeners();
   }
 
   loadEventListeners() {
@@ -57,7 +59,6 @@ class CharacterStats {
     let input = event.target.value;
     totalCount += input.length;
     totalCharacters.innerText = totalCount;
-    console.log("Counts & Spaces =", totalCount, this.countSpace());
 
     localStorage.clear();
     let total = Storage.addCharactersToStorage(totalCount);
@@ -175,15 +176,35 @@ class CharacterStats {
     });
   }
 
-  readingTime() {
+  countdown() {
     let timeout,
       countdown = 60;
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
-    });
-    clearInterval(timeout);
-    if (countdown == 0) {
-      readingTime.innerText = "0 seconds";
+
+      if (countdown == 55) {
+        notification.classList.add("show");
+      }
+
+      if (countdown == 30) {
+        getCharacters();
+        alphabetStats(letterDensity(graph));
+        notification.classList.remove("show");
+      }
+
+      if (countdown == 0) {
+        clearInterval(timeout);
+        readingTime.innerText = "0 seconds";
+        this.resetUI();
+      }
+    }, 800);
+  }
+
+  runApp() {
+    if (inputLength() > 1) {
+      setTimeout(() => {
+        this.countdown();
+      }, 2000);
     }
   }
 
@@ -195,6 +216,7 @@ class CharacterStats {
 
   resetUtilities() {
     limitInput.value = "";
+    notification.remove();
     characterInput.value = "";
     limitReached.classList.add("hide");
     characterInput.classList.add("border");
@@ -205,6 +227,7 @@ class CharacterStats {
     wordCount.innerText = "00";
     totalCharacters.innerText = "00";
     sentenceCount.innerText = "00";
+    readingTime.innerText = "1 minute";
     localStorage.removeItem("totalCharacters");
     localStorage.removeItem("wordCount");
     localStorage.removeItem("sentenceCount");

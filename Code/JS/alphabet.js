@@ -103,9 +103,20 @@ export function alphabetStats(object) {
 }
 
 export default function getCharacters() {
-  let contents = [];
-  contents.push(characterInput.value);
+  let contents = [],
+    one = 1;
+  for (let i = 0; i <= one; i++) {
+    contents.push(characterInput.value);
+  }
   return contents;
+}
+
+export function inputLength() {
+  let length = 0;
+  for (let char of getCharacters()) {
+    length += char.length;
+  }
+  return length;
 }
 
 function alphabetCounter(alphabet) {
@@ -128,8 +139,6 @@ function letterDensity(object) {
   return object.sort((a, b) => a.count < b.count);
 }
 
-alphabetStats(letterDensity(graph));
-
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
@@ -148,12 +157,6 @@ toggle.addEventListener("click", toggleGraph);
 
 window.onload = () => {
   toggle.remove();
-
-  if (characterInput.value.length > 20)  {
-    setTimeout(()  =>  {
-      alphabetStats(letterDensity(graph))
-    }, 2000)
-  }
 };
 
-export { graph, letterDensity , toggle };
+export { graph, letterDensity, toggle };
