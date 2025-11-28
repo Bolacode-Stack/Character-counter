@@ -171,8 +171,6 @@ button {
 .limit-reached {
   opacity: 0;
   display: flex;
-  align-items: baseline;
-  justify-content: start;
   margin-top: var(--radius);
   column-gap: calc(var(--reg) / 2);
   transform: translateY(var(--percent));
@@ -195,10 +193,6 @@ button {
 
 .limit-reached > p {
   width: var(--percent);
-}
-
-.showcase-data {
-  margin-block-start: var(--reg);
 }
 
 /* checkboxes */
@@ -267,15 +261,15 @@ input[type="checkbox"] {
 
 .notification {
   opacity: 0;
-  margin: 20px 0;
   color: var(--light-purple);
   transform: translateY(var(--percent));
 }
 
 .notification.show {
   opacity: 1;
+  margin-top: 8px;
   transform: translateY(0);
-  transition: 800ms ease-in-out;
+  transition: transform 800ms ease-in-out;
 }
 
 /*  boxes */
@@ -572,5 +566,11 @@ input[type="checkbox"] {
 
   .character-input {
     grid-column: 2 / -2;
+  }
+
+  .append-1,
+  .append-2 {
+    left: 266px;
+    position: relative;
   }
 }

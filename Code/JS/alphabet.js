@@ -3,7 +3,10 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
 const toggle = document.querySelector(".see");
-const icon = document.querySelector(".fa-solid");
+const icon = document.querySelector('.fa-solid');
+const notify = document.querySelector('.notify');
+const append = document.querySelector('.append-1');
+const limitReached = document.querySelector('.limit-reached');
 
 let graph = [
   { alphabet: "a", count: 0 },
@@ -155,8 +158,13 @@ function toggleGraph() {
 
 toggle.addEventListener("click", toggleGraph);
 
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', (event)  =>  {
   toggle.remove();
-};
+  
+  if (characterInput.value == "")  {
+    // notify.remove();
+    limitReached.remove();
+  }
+});
 
 export { graph, letterDensity, toggle };
