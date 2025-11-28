@@ -22,12 +22,10 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
 const notification = document.querySelector(".notification");
 
-let zero,
-  time = 50,
-  second = 1000;
 let typing = true;
-let string = ["Analyze your text in real-time"];
+let second = 1000;
 let regex = /\w+/g;
+let string = ["Analyze your text in real-time"];
 
 theme.addEventListener("click", (event) => {
   body.classList.toggle("light-theme");
@@ -42,8 +40,9 @@ theme.addEventListener("click", (event) => {
 
 class CharacterStats {
   constructor() {
-    this.loadEventListeners();
     this.render();
+    this.runApp();
+    this.loadEventListeners();
   }
 
   loadEventListeners() {
@@ -188,22 +187,24 @@ class CharacterStats {
       }
 
       if (countdown == 30) {
-        console.log(getCharacters());
+        getCharacters();
         alphabetStats(letterDensity(graph));
         notification.classList.remove("show");
       }
 
-      if (countdown == zero) {
+      if (countdown == 0) {
         clearInterval(timeout);
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
-    }, second);
+    }, 800);
   }
 
   runApp() {
     if (inputLength() > 1) {
-      this.countdown();
+      setTimeout(() => {
+        this.countdown();
+      }, 2000);
     }
   }
 
@@ -241,7 +242,6 @@ class CharacterStats {
   }
 
   render() {
-    this.runApp();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();

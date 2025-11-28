@@ -24,16 +24,16 @@
       <div class="showcase">
         <h1 class="heading">Analyze your text in real-time</h1>
         <textarea
-          name="input" 
+          name="input"
           for="characters"
           placeholder="Start typing here... (or paste some text)"
           class="character-input"
         ></textarea>
         <!-- limit  -->
         <div class="limit-reached">
-            <img src="/Assets/images/icon-info.svg" alt="" />
-            <p class="limit-warning">
-              Limit reached! Your text exceeds 300 characters.
+          <img src="/Assets/images/icon-info.svg" alt="" />
+          <p class="limit-warning">
+            Limit reached! Your text exceeds 300 characters.
           </p>
         </div>
         <div class="showcase-data">
@@ -43,18 +43,24 @@
             <label for="">exclude spaces</label>
           </div>
           <!-- (2) -->
+
           <div class="checkbox-contents">
-            <input type="checkbox" class="limit-check"/>
+            <input type="checkbox" class="limit-check" />
             <label for="">set character limit</label>
             <input type="text" placeholder="" class="limit-count" />
-              <button class="reset">Reset UI</button>
+            <button class="reset">Reset UI</button>
           </div>
           <div class="reading">
             <p class="">
               Approx. reading time: <span class="reading-time">1 minute</span>
             </p>
-            <p class="notification">Your letter Density graph will the visible in 25 seconds...</p>
           </div>
+        </div>
+
+        <div class="notify">
+          <p class="notification">
+            Your letter Density graph will the visible in 25 seconds...
+          </p>
         </div>
       </div>
     </main>
@@ -92,15 +98,17 @@
 
     <section class="character-grid">
       <div class="stats">
-          <h1 class="">Letter Density</h1>
-          <p class="stats-paragraph">No characters found. Start typing to see letter density.</p>
+        <h1 class="">Letter Density</h1>
+        <p class="stats-paragraph">
+          No characters found. Start typing to see letter density.
+        </p>
       </div>
-        
-        <div class="contents">
-          <div class="progress-wrapper graph"></div>
-          <button class="see more-less">
-            See More<i class="fa-solid fa-chevron-down"></i>
-          </button>
+
+      <div class="contents">
+        <div class="progress-wrapper graph"></div>
+        <button class="see more-less">
+          See More<i class="fa-solid fa-chevron-down"></i>
+        </button>
       </div>
     </section>
     <script src="/Code/JS/character.js" type="module"></script>
