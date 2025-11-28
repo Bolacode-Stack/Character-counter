@@ -21,6 +21,9 @@ let totalCharacters = document.querySelector("#total-characters");
 const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
 const notification = document.querySelector(".notification");
+const warning = document.querySelector(".limit-warning");
+const notify = document.querySelector(".notify");
+const append1 = document.querySelector(".append-1");
 
 let typing = true;
 let second = 1000;
@@ -197,14 +200,14 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
-    }, 800);
+    }, 1000);
   }
 
   runApp() {
-    if (inputLength() > 1) {
-      setTimeout(() => {
+    if (inputLength() >= 10) {
+      for (let i = 0; i < 1; i++) {
         this.countdown();
-      }, 2000);
+      }
     }
   }
 
