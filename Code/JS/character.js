@@ -200,7 +200,7 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
-    }, 1000);
+    }, 300);
   }
 
   runApp() {
