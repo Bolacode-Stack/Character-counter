@@ -108,9 +108,7 @@ export function alphabetStats(object) {
 export default function getCharacters() {
   let contents = [],
     one = 1;
-  for (let i = 0; i <= one; i++) {
     contents.push(characterInput.value);
-  }
   return contents;
 }
 
@@ -121,6 +119,8 @@ export function inputLength() {
   }
   return length;
 }
+
+// console.log(inputLength());
 
 function alphabetCounter(alphabet) {
   let counted = 0;

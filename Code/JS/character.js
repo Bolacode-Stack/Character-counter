@@ -44,7 +44,6 @@ theme.addEventListener("click", (event) => {
 class CharacterStats {
   constructor() {
     this.render();
-    this.runApp();
     this.loadEventListeners();
   }
 
@@ -66,6 +65,8 @@ class CharacterStats {
     localStorage.clear();
     let total = Storage.addCharactersToStorage(totalCount);
 
+    let limit = Storage.addLimitToStorage(totalCount);
+
     spaces.addEventListener("change", (event) => {
       let isChecked = event.target.checked ? true : false;
 
@@ -83,6 +84,12 @@ class CharacterStats {
     } else if (totalCount <= this.setLimit()) {
       limitReached.classList.remove("show");
       characterInput.classList.remove("limit");
+    }
+
+    let inputCount = totalCount;
+    if (inputCount == 10) {
+      this.runApp();
+      console.log("App Running", inputCount);
     }
   }
 
@@ -200,27 +207,35 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
-    }, 300);
+
+      let reset = document.querySelector('.reset');
+      reset.addEventListener("click", ()  =>  {
+        this.resetUI();
+        clearInterval(timeout);
+      })
+    }, 1000);
   }
 
   runApp() {
-    if (inputLength() >= 10) {
-      for (let i = 0; i < 1; i++) {
-        this.countdown();
-      }
-    }
+    this.countdown();
   }
 
   resetUI() {
     this.resetStats();
-    this.resetUtilities();
     this.resetGraph();
+    this.resetUtilities();
+
+    // let reset = this.countdown();
+
+    // if (reset)  {
+    //   reset = null;
+    // }
   }
 
   resetUtilities() {
     limitInput.value = "";
     notification.remove();
-    characterInput.value = "";
+    // characterInput.value = "";
     limitReached.classList.add("hide");
     characterInput.classList.add("border");
     characterInput.classList.remove("limit");
