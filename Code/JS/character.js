@@ -1,5 +1,4 @@
 import Storage from "./storage.js";
-import { inputLength } from "./alphabet.js";
 import getCharacters from "./alphabet.js";
 import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
 
@@ -119,7 +118,7 @@ class CharacterStats {
         wordCount.innerText = count;
       }
 
-      let total = Storage.addWordsToStorage(count);
+      let words = Storage.addWordsToStorage(count);
     });
   }
 
@@ -137,7 +136,7 @@ class CharacterStats {
         sentenceCount.innerText = value;
       }
 
-      let total = Storage.addSentenceToStorage(value);
+      let sentences = Storage.addSentenceToStorage(value);
     });
   }
 
