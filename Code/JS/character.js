@@ -203,8 +203,8 @@ class CharacterStats {
       }
 
       if (countdown == 30) {
-        getCharacters();
-        alphabetStats(letterDensity(graph));
+        // getCharacters();
+        // alphabetStats(letterDensity(graph));
         notification.classList.remove("show");
       }
 
