@@ -2,7 +2,7 @@ class Storage {
   static addCharactersToStorage(count) {
     let characters = this.getCharactersFromStorage();
 
-    characters.push(count)
+    characters.push(count);
     localStorage.setItem("totalCharacters", JSON.stringify(characters));
     return characters;
   }
@@ -54,6 +54,25 @@ class Storage {
       sentence = JSON.parse(localStorage.getItem("sentenceCount"));
     }
     return sentence;
+  }
+
+  static addLimitToStorage(limit) {
+    let characterLimit = this.getLimitFromStorage();
+
+    characterLimit = limit;
+
+    localStorage.setItem("characterLimit", characterLimit);
+  }
+
+  static getLimitFromStorage() {
+    let characterLimit;
+
+    if (localStorage.getItem("characterLimit") !== null) {
+      characterLimit = 0;
+    } else {
+      localStorage.getItem("characterLimit");
+    }
+    return characterLimit;
   }
 }
 

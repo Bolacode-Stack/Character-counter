@@ -1,5 +1,4 @@
 import Storage from "./storage.js";
-import { inputLength } from "./alphabet.js";
 import getCharacters from "./alphabet.js";
 import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
 
@@ -44,7 +43,6 @@ theme.addEventListener("click", (event) => {
 class CharacterStats {
   constructor() {
     this.render();
-    this.runApp();
     this.loadEventListeners();
   }
 
@@ -66,6 +64,9 @@ class CharacterStats {
     localStorage.clear();
     let total = Storage.addCharactersToStorage(totalCount);
 
+    let hunna = 300;
+    let characterLimit = Storage.addLimitToStorage(hunna);
+
     spaces.addEventListener("change", (event) => {
       let isChecked = event.target.checked ? true : false;
 
@@ -84,8 +85,20 @@ class CharacterStats {
       limitReached.classList.remove("show");
       characterInput.classList.remove("limit");
     }
-  }
 
+    let inputCount = totalCount;
+    if (!typing && inputCount <= 10)  {
+      this.countdown() == null
+
+    }
+
+    if (typing && inputCount >= 10) {
+      // typing = true;
+      this.countdown() == true;
+      console.log("App Running", inputCount);
+    }
+  }
+  
   setLimit() {
     let limit = parseInt(limitInput.value);
     return limit;
@@ -105,7 +118,7 @@ class CharacterStats {
         wordCount.innerText = count;
       }
 
-      let total = Storage.addWordsToStorage(count);
+      let words = Storage.addWordsToStorage(count);
     });
   }
 
@@ -123,7 +136,7 @@ class CharacterStats {
         sentenceCount.innerText = value;
       }
 
-      let total = Storage.addSentenceToStorage(value);
+      let sentences = Storage.addSentenceToStorage(value);
     });
   }
 
@@ -190,8 +203,8 @@ class CharacterStats {
       }
 
       if (countdown == 30) {
-        getCharacters();
-        alphabetStats(letterDensity(graph));
+        // getCharacters();
+        // alphabetStats(letterDensity(graph));
         notification.classList.remove("show");
       }
 
@@ -200,21 +213,23 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         this.resetUI();
       }
+
+      let reset = document.querySelector(".reset");
+      reset.addEventListener("click", () => {
+        this.resetUI();
+        clearInterval(timeout);
+      });
     }, 1000);
   }
 
   runApp() {
-    if (inputLength() >= 10) {
-      for (let i = 0; i < 1; i++) {
-        this.countdown();
-      }
-    }
+    this.countdown();
   }
 
   resetUI() {
     this.resetStats();
-    this.resetUtilities();
     this.resetGraph();
+    this.resetUtilities();
   }
 
   resetUtilities() {
@@ -245,6 +260,7 @@ class CharacterStats {
   }
 
   render() {
+    // this.countdown();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();

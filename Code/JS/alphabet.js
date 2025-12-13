@@ -3,10 +3,10 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
 const toggle = document.querySelector(".see");
-const icon = document.querySelector('.fa-solid');
-const notify = document.querySelector('.notify');
-const append = document.querySelector('.append-1');
-const limitReached = document.querySelector('.limit-reached');
+const icon = document.querySelector(".fa-solid");
+const notify = document.querySelector(".notify");
+const append = document.querySelector(".append-1");
+const limitReached = document.querySelector(".limit-reached");
 
 let graph = [
   { alphabet: "a", count: 0 },
@@ -106,20 +106,9 @@ export function alphabetStats(object) {
 }
 
 export default function getCharacters() {
-  let contents = [],
-    one = 1;
-  for (let i = 0; i <= one; i++) {
-    contents.push(characterInput.value);
-  }
+  let contents = [];
+  contents.push(characterInput.value);
   return contents;
-}
-
-export function inputLength() {
-  let length = 0;
-  for (let char of getCharacters()) {
-    length += char.length;
-  }
-  return length;
 }
 
 function alphabetCounter(alphabet) {
@@ -146,8 +135,12 @@ function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
-    icon.classList.add("fa-chevron-up", "rotate");
+    icon.classList.add("fa-chevron-up");
+    toggle.textContent = "See Less";
+    toggle.appendChild(icon);
   } else if (wrapper.innerHTML !== "") {
+    toggle.textContent = "See More";
+    toggle.appendChild(icon);
     wrapper.style.height = "200px";
     icon.classList.remove("fa-chevron-up");
     icon.classList.add("fa-chevron-down");
@@ -158,11 +151,10 @@ function toggleGraph() {
 
 toggle.addEventListener("click", toggleGraph);
 
-document.addEventListener('DOMContentLoaded', (event)  =>  {
+document.addEventListener("DOMContentLoaded", (event) => {
   toggle.remove();
-  
-  if (characterInput.value == "")  {
-    // notify.remove();
+
+  if (characterInput.value == "") {
     limitReached.remove();
   }
 });
