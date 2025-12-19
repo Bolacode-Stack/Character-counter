@@ -82,7 +82,7 @@ export function alphabetStats(object) {
 
     let stats = 0;
     let timerID = setInterval(() => {
-      letterStats.innerText = ` ${stats++}(${percentage.toFixed(2)}) `;
+      letterStats.innerText = `${stats++}(${percentage.toFixed(2)}) `;
 
       if (stats == brace.count) {
         clearInterval(timerID);

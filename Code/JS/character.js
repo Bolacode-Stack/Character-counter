@@ -24,7 +24,7 @@ const warning = document.querySelector(".limit-warning");
 const notify = document.querySelector(".notify");
 const append1 = document.querySelector(".append-1");
 
-let typing = true;
+let typing = false;
 let second = 1000;
 let regex = /\w+/g;
 let string = ["Analyze your text in real-time"];
@@ -53,6 +53,7 @@ class CharacterStats {
 
     limitCheckbox.addEventListener("change", this.setLimit.bind(this));
     resetUI.addEventListener("click", this.resetUI.bind(this));
+    document.addEventListener("DOMContentLoaded", this.runApp.bind(this));
   }
 
   totalCharacters(event) {
@@ -85,20 +86,8 @@ class CharacterStats {
       limitReached.classList.remove("show");
       characterInput.classList.remove("limit");
     }
-
-    let inputCount = totalCount;
-    if (!typing && inputCount <= 10)  {
-      this.countdown() == null
-
-    }
-
-    if (typing && inputCount >= 10) {
-      // typing = true;
-      this.countdown() == true;
-      console.log("App Running", inputCount);
-    }
   }
-  
+
   setLimit() {
     let limit = parseInt(limitInput.value);
     return limit;
@@ -203,8 +192,8 @@ class CharacterStats {
       }
 
       if (countdown == 30) {
-        // getCharacters();
-        // alphabetStats(letterDensity(graph));
+        getCharacters();
+        alphabetStats(letterDensity(graph));
         notification.classList.remove("show");
       }
 
@@ -219,17 +208,24 @@ class CharacterStats {
         this.resetUI();
         clearInterval(timeout);
       });
-    }, 1000);
+    }, 200);
   }
 
   runApp() {
-    this.countdown();
+    let alphabetCount = characterInput.value.length;
+    setTimeout(() => {
+      if (alphabetCount >= 10) {
+        console.log("Fire");
+        this.countdown();
+      }
+    }, 5000);
   }
 
   resetUI() {
     this.resetStats();
     this.resetGraph();
     this.resetUtilities();
+    localStorage.clear();
   }
 
   resetUtilities() {
@@ -260,10 +256,12 @@ class CharacterStats {
   }
 
   render() {
-    // this.countdown();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
+    // if (characterInput.value >= 10)  {
+    //   this.countdown();
+    // }
   }
 }
 
