@@ -18,9 +18,7 @@ const theme = document.querySelector(".theme");
 let totalCharacters = document.querySelector("#total-characters");
 const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
-const notification = document.querySelector(".notification");
 const warning = document.querySelector(".limit-warning");
-const notify = document.querySelector(".notify");
 
 let typing = false;
 let second = 1000;
@@ -49,12 +47,12 @@ class CharacterStats {
     resetUI.addEventListener("click", this.resetUI.bind(this));
   }
 
-  handleEvent()  {
-    characterInput.addEventListener("input", (event)  =>  {
-      this.totalCharacters(event)
+  handleEvent() {
+    characterInput.addEventListener("input", (event) => {
+      this.totalCharacters(event);
       this.wordCount(event);
       this.sentenceCount(event);
-    })
+    });
   }
 
   totalCharacters(event) {
@@ -89,7 +87,7 @@ class CharacterStats {
     }
 
     let startCountdown = totalCount === 10;
-    if (startCountdown)   {
+    if (startCountdown) {
       this.countdown();
       console.log(startCountdown);
       return;
@@ -195,20 +193,11 @@ class CharacterStats {
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
 
-      if (countdown == 55) {
-        notification.classList.add("show");
-      }
-
-      if (countdown == 30) {
-        getCharacters();
-        alphabetStats(letterDensity(graph));
-        notification.classList.remove("show");
-      }
-
       if (countdown == 0) {
         clearInterval(timeout);
         readingTime.innerText = "0 seconds";
-        this.resetUI();
+        getCharacters();
+        alphabetStats(letterDensity(graph));
       }
 
       let reset = document.querySelector(".reset");
@@ -216,7 +205,7 @@ class CharacterStats {
         this.resetUI();
         clearInterval(timeout);
       });
-    }, 1000);
+    }, 200);
   }
 
   resetUI() {
@@ -228,7 +217,6 @@ class CharacterStats {
 
   resetUtilities() {
     limitInput.value = "";
-    notification.remove();
     characterInput.value = "";
     limitReached.classList.add("hide");
     characterInput.classList.add("border");
@@ -261,5 +249,4 @@ class CharacterStats {
 }
 
 const stats = new CharacterStats();
-stats.handleEvent()
-
+stats.handleEvent();

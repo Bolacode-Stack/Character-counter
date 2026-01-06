@@ -1,7 +1,7 @@
 const characterInput = document.querySelector(".character-input");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
-const icon = document.querySelector('.fa-solid')
+const icon = document.querySelector(".fa-solid");
 const toggle = document.querySelector(".see");
 const limitReached = document.querySelector(".limit-reached");
 const statsParagraph = document.querySelector(".stats-paragraph");
@@ -131,20 +131,13 @@ function letterDensity(object) {
 
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
-
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
     icon.classList.add("fa-chevron-up");
-    toggle.textContent = "See Less";
-    toggle.appendChild(icon);
   } else if (wrapper.innerHTML !== "") {
-    toggle.textContent = "See More";
-    toggle.appendChild(icon);
     wrapper.style.height = "200px";
     icon.classList.remove("fa-chevron-up");
     icon.classList.add("fa-chevron-down");
-  } else {
-    wrapper.style.height = "0px";
   }
 }
 
