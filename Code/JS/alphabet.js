@@ -123,7 +123,7 @@ function alphabetCounter(alphabet) {
 }
 
 function letterDensity(object) {
-  object.forEach((brace) => {
+  object.forEach((brace)  => {
     brace["count"] = alphabetCounter(brace.alphabet);
   });
   return object.sort((a, b) => a.count < b.count);
@@ -135,17 +135,11 @@ function toggleGraph() {
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
     icon.classList.add("fa-chevron-up");
-    toggle.textContent = "See Less";
-    toggle.appendChild(icon);
   } else if (wrapper.innerHTML !== "") {
-    toggle.textContent = "See More";
-    toggle.appendChild(icon);
     wrapper.style.height = "200px";
     icon.classList.remove("fa-chevron-up");
     icon.classList.add("fa-chevron-down");
-  } else {
-    wrapper.style.height = "0px";
-  }
+  } 
 }
 
 toggle.addEventListener("click", toggleGraph);

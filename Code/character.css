@@ -259,19 +259,6 @@ input[type="checkbox"] {
   align-self: center;
 }
 
-.notification {
-  opacity: 0;
-  color: var(--light-purple);
-  transform: translateY(var(--percent));
-}
-
-.notification.show {
-  opacity: 1;
-  margin-top: 8px;
-  transform: translateY(0);
-  transition: transform 800ms ease-in-out;
-}
-
 /*  boxes */
 .boxes {
   grid-column: 2 / -2;
