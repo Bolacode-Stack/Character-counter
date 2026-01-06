@@ -1,12 +1,10 @@
 const characterInput = document.querySelector(".character-input");
-const statsParagraph = document.querySelector(".stats-paragraph");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
+const icon = document.querySelector('.fa-solid')
 const toggle = document.querySelector(".see");
-const icon = document.querySelector(".fa-solid");
-const notify = document.querySelector(".notify");
-const append = document.querySelector(".append-1");
 const limitReached = document.querySelector(".limit-reached");
+const statsParagraph = document.querySelector(".stats-paragraph");
 
 let graph = [
   { alphabet: "a", count: 0 },
@@ -133,6 +131,7 @@ function letterDensity(object) {
 
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
+
     wrapper.style.height = wrapper.scrollHeight + "px";
     icon.classList.remove("fa-chevron-down");
     icon.classList.add("fa-chevron-up");

@@ -12,7 +12,6 @@ const wordCount = document.querySelector(".word-count");
 const characterInput = document.querySelector(".character-input");
 const readingTime = document.querySelector(".reading-time");
 const wrapper = document.querySelector(".progress-wrapper");
-const icon = document.querySelector(".fa-solid");
 const logo = document.querySelector("#logo");
 const body = document.querySelector("body");
 const theme = document.querySelector(".theme");
@@ -22,7 +21,6 @@ const resetUI = document.querySelector(".reset");
 const notification = document.querySelector(".notification");
 const warning = document.querySelector(".limit-warning");
 const notify = document.querySelector(".notify");
-const append1 = document.querySelector(".append-1");
 
 let typing = false;
 let second = 1000;
@@ -47,13 +45,16 @@ class CharacterStats {
   }
 
   loadEventListeners() {
-    characterInput.addEventListener("input", this.totalCharacters.bind(this));
-    characterInput.addEventListener("input", this.wordCount.bind(this));
-    characterInput.addEventListener("input", this.sentenceCount.bind(this));
-
     limitCheckbox.addEventListener("change", this.setLimit.bind(this));
     resetUI.addEventListener("click", this.resetUI.bind(this));
-    document.addEventListener("DOMContentLoaded", this.runApp.bind(this));
+  }
+
+  handleEvent()  {
+    characterInput.addEventListener("input", (event)  =>  {
+      this.totalCharacters(event)
+      this.wordCount(event);
+      this.sentenceCount(event);
+    })
   }
 
   totalCharacters(event) {
@@ -85,6 +86,13 @@ class CharacterStats {
     } else if (totalCount <= this.setLimit()) {
       limitReached.classList.remove("show");
       characterInput.classList.remove("limit");
+    }
+
+    let startCountdown = totalCount === 10;
+    if (startCountdown)   {
+      this.countdown();
+      console.log(startCountdown);
+      return;
     }
   }
 
@@ -208,17 +216,7 @@ class CharacterStats {
         this.resetUI();
         clearInterval(timeout);
       });
-    }, 200);
-  }
-
-  runApp() {
-    let alphabetCount = characterInput.value.length;
-    setTimeout(() => {
-      if (alphabetCount >= 10) {
-        console.log("Fire");
-        this.countdown();
-      }
-    }, 5000);
+    }, 1000);
   }
 
   resetUI() {
@@ -259,12 +257,9 @@ class CharacterStats {
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
-    // if (characterInput.value >= 10)  {
-    //   this.countdown();
-    // }
   }
 }
 
 const stats = new CharacterStats();
+stats.handleEvent()
 
-export { icon, wrapper, statsParagraph };
