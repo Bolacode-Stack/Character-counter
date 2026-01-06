@@ -12,7 +12,6 @@ const wordCount = document.querySelector(".word-count");
 const characterInput = document.querySelector(".character-input");
 const readingTime = document.querySelector(".reading-time");
 const wrapper = document.querySelector(".progress-wrapper");
-const icon = document.querySelector(".fa-solid");
 const logo = document.querySelector("#logo");
 const body = document.querySelector("body");
 const theme = document.querySelector(".theme");
@@ -22,9 +21,8 @@ const resetUI = document.querySelector(".reset");
 const notification = document.querySelector(".notification");
 const warning = document.querySelector(".limit-warning");
 const notify = document.querySelector(".notify");
-const append1 = document.querySelector(".append-1");
 
-let typing = true;
+let typing = false;
 let second = 1000;
 let regex = /\w+/g;
 let string = ["Analyze your text in real-time"];
@@ -47,12 +45,16 @@ class CharacterStats {
   }
 
   loadEventListeners() {
-    characterInput.addEventListener("input", this.totalCharacters.bind(this));
-    characterInput.addEventListener("input", this.wordCount.bind(this));
-    characterInput.addEventListener("input", this.sentenceCount.bind(this));
-
     limitCheckbox.addEventListener("change", this.setLimit.bind(this));
     resetUI.addEventListener("click", this.resetUI.bind(this));
+  }
+
+  handleEvent()  {
+    characterInput.addEventListener("input", (event)  =>  {
+      this.totalCharacters(event)
+      this.wordCount(event);
+      this.sentenceCount(event);
+    })
   }
 
   totalCharacters(event) {
@@ -86,19 +88,14 @@ class CharacterStats {
       characterInput.classList.remove("limit");
     }
 
-    let inputCount = totalCount;
-    if (!typing && inputCount <= 10)  {
-      this.countdown() == null
-
-    }
-
-    if (typing && inputCount >= 10) {
-      // typing = true;
-      this.countdown() == true;
-      console.log("App Running", inputCount);
+    let startCountdown = totalCount === 10;
+    if (startCountdown)   {
+      this.countdown();
+      console.log(startCountdown);
+      return;
     }
   }
-  
+
   setLimit() {
     let limit = parseInt(limitInput.value);
     return limit;
@@ -203,8 +200,8 @@ class CharacterStats {
       }
 
       if (countdown == 30) {
-        // getCharacters();
-        // alphabetStats(letterDensity(graph));
+        getCharacters();
+        alphabetStats(letterDensity(graph));
         notification.classList.remove("show");
       }
 
@@ -222,14 +219,11 @@ class CharacterStats {
     }, 1000);
   }
 
-  runApp() {
-    this.countdown();
-  }
-
   resetUI() {
     this.resetStats();
     this.resetGraph();
     this.resetUtilities();
+    localStorage.clear();
   }
 
   resetUtilities() {
@@ -260,7 +254,6 @@ class CharacterStats {
   }
 
   render() {
-    // this.countdown();
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
@@ -268,5 +261,5 @@ class CharacterStats {
 }
 
 const stats = new CharacterStats();
+stats.handleEvent()
 
-export { icon, wrapper, statsParagraph };
