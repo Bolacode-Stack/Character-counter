@@ -73,7 +73,7 @@ export function alphabetStats(object) {
       return combine + count;
     }, 0);
 
-    let percentage = (brace.count / totalCount) * 100;
+    let percentage = (brace.count / totalCount)       * 100;
 
     let letterStats = document.createElement("div");
     letterStats.className = "letter-stats";
@@ -91,7 +91,6 @@ export function alphabetStats(object) {
 
     const displayGraph = () => {
       let appended = wrapper.appendChild(progressBars);
-      console.log(appended)
       if (appended) {
         wrapper.style.height = "200px";
         statsParagraph.style.display = "none";
@@ -102,10 +101,6 @@ export function alphabetStats(object) {
       }
     };
     displayGraph();
-
-    if (wrapper.innerHTML != "")  {
-      displayGraph();
-    }
   });
 }
 
