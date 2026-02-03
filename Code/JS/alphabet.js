@@ -88,18 +88,24 @@ export function alphabetStats(object) {
     }, 100);
 
     progressBars.append(div, progress, letterStats);
-    let appended = wrapper.appendChild(progressBars);
 
-    setTimeout(() => {
+    const displayGraph = () => {
+      let appended = wrapper.appendChild(progressBars);
+      console.log(appended)
       if (appended) {
-        wrapper.classList.add("height-limit");
-        statsParagraph.classList.add("hide");
+        wrapper.style.height = "200px";
+        statsParagraph.style.display = "none";
         contents.appendChild(toggle);
       } else if (!appended) {
         wrapper.classList.remove("height-limit");
         statsParagraph.classList.remove("hide");
       }
-    }, 1500);
+    };
+    displayGraph();
+
+    if (wrapper.innerHTML != "")  {
+      displayGraph();
+    }
   });
 }
 
@@ -132,18 +138,22 @@ function letterDensity(object) {
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
+    toggle.textContent = "See Less";
     icon.classList.remove("fa-chevron-down");
     icon.classList.add("fa-chevron-up");
+    toggle.appendChild(icon);
   } else if (wrapper.innerHTML !== "") {
     wrapper.style.height = "200px";
+    toggle.textContent = "See More";
     icon.classList.remove("fa-chevron-up");
     icon.classList.add("fa-chevron-down");
+    toggle.appendChild(icon);
   }
 }
 
 toggle.addEventListener("click", toggleGraph);
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
   toggle.remove();
 
   if (characterInput.value == "") {

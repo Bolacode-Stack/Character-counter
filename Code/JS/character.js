@@ -89,7 +89,7 @@ class CharacterStats {
     let startCountdown = totalCount === 10;
     if (startCountdown) {
       this.countdown();
-      console.log(startCountdown);
+      // console.log(startCountdown);
       return;
     }
   }
