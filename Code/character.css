@@ -111,7 +111,7 @@
   height: calc(var(--reg) + 0.25rem);
 }
 
-.heading {
+:is(.heading) {
   text-align: center;
   color: var(--white);
   letter-spacing: -2px;
@@ -210,7 +210,7 @@ input[type="checkbox"] {
   accent-color: var(--deep-purple);
 }
 
-input + label {
+:is(input) ~ label {
   color: var(--white);
   font-size: var(--reg);
   text-transform: capitalize;
