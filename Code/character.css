@@ -115,8 +115,8 @@
   text-align: center;
   color: var(--white);
   letter-spacing: -2px;
-  font-size: clamp(2.5rem, 1.971830985915493rem + 2.253521126760563vw, 4rem);
   padding-block: var(--font-md);
+  font-size: clamp(2.5rem, 1.971830985915493rem + 2.253521126760563vw, 4rem);
 }
 
 p {
@@ -210,7 +210,7 @@ input[type="checkbox"] {
   accent-color: var(--deep-purple);
 }
 
-.checkbox-contents > label {
+input + label {
   color: var(--white);
   font-size: var(--reg);
   text-transform: capitalize;
