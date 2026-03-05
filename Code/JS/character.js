@@ -248,5 +248,9 @@ class CharacterStats {
   }
 }
 
+document.addEventListener("load", ()  =>  {
+  localStorage.clear();
+})
+
 const stats = new CharacterStats();
 stats.handleEvent();
