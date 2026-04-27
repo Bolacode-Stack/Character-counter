@@ -111,16 +111,16 @@ export default function getCharacters() {
 }
 
 function alphabetCounter(alphabet) {
-  let counted = 0;
+  let count = 0;
   let contents = getCharacters();
   for (let string of contents) {
     for (let i = 0; i < string.length; i++) {
       if (string[i] == alphabet) {
-        counted += 1;
+        count += 1;
       }
     }
   }
-  return counted;
+  return count;
 }
 
 function letterDensity(object) {
