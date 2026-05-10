@@ -39,9 +39,7 @@ let logout;
 export function alphabetStats(object) {
   let bars = [];
 
-  let filteredGraph = object.filter((character) => {
-    return character.count !== 0;
-  });
+  let filteredGraph = object.filter((character => character.count !== 0));
 
   filteredGraph.forEach((brace) => {
     let progressBars = document.createElement("div");
@@ -80,7 +78,7 @@ export function alphabetStats(object) {
 
     let stats = 0;
     let timerID = setInterval(() => {
-      letterStats.innerText = `${stats++}(${percentage.toFixed(2)}) `;
+      letterStats.innerText = `${stats++}(${percentage.toPrecision(3)}) `;
 
       if (stats == brace.count) {
         clearInterval(timerID);
@@ -104,7 +102,7 @@ export function alphabetStats(object) {
   });
 }
 
-export default function getCharacters() {
+export function getCharacters() {
   let contents = [];
   contents.push(characterInput.value);
   return contents;
@@ -134,14 +132,12 @@ function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
     toggle.textContent = "See Less";
-    icon.classList.remove("fa-chevron-down");
-    icon.classList.add("fa-chevron-up");
+    icon.classList.replace("fa-chevron-down", "fa-chevron-up")
     toggle.appendChild(icon);
   } else if (wrapper.innerHTML !== "") {
     wrapper.style.height = "200px";
     toggle.textContent = "See More";
-    icon.classList.remove("fa-chevron-up");
-    icon.classList.add("fa-chevron-down");
+    icon.classList.replace("fa-chevron-up", "fa-chevron-down")
     toggle.appendChild(icon);
   }
 }

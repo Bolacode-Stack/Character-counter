@@ -1,6 +1,5 @@
 import Storage from "./storage.js";
-import getCharacters from "./alphabet.js";
-import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
+import { graph, alphabetStats, getCharacters, letterDensity, toggle } from "./alphabet.js";
 
 let output;
 const limitInput = document.querySelector(".limit-count");
@@ -190,14 +189,22 @@ class CharacterStats {
   countdown() {
     let timeout,
       countdown = 60;
+
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
+      typing = true;
 
       if (countdown == 0) {
         clearInterval(timeout);
         readingTime.innerText = "0 seconds";
-        getCharacters();
-        alphabetStats(letterDensity(graph));
+      }
+
+      if (countdown === 0)  {
+        typing = false;
+
+        setTimeout(()  =>  {
+          alphabetStats(letterDensity(graph));
+        }, 100)
       }
 
       let reset = document.querySelector(".reset");
@@ -248,9 +255,9 @@ class CharacterStats {
   }
 }
 
-document.addEventListener("load", ()  =>  {
+document.addEventListener("load", () => {
   localStorage.clear();
-})
+});
 
 const stats = new CharacterStats();
 stats.handleEvent();
