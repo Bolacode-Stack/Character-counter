@@ -341,10 +341,11 @@ input[type="checkbox"] {
 }
 
 .see {
-  border: 0;
+  outline: none;
   display: flex;
   text-align: left;
   cursor: pointer;
+  border: none;
   color: var(--grey-2);
   font-family: inherit;
   align-items: center;

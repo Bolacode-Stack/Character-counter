@@ -56,23 +56,19 @@ class Storage {
     return sentence;
   }
 
-  static addLimitToStorage(limit) {
-    let characterLimit = this.getLimitFromStorage();
+  // graphStorage
+  static getGraphFromStorage() {
+    let graph;
 
-    characterLimit = limit;
-
-    localStorage.setItem("characterLimit", characterLimit);
+    if (localStorage.getItem("graph") !== null) {
+      graph = JSON.parse(localStorage.getItem("graph"))
+    } 
+    return graph;
   }
 
-  static getLimitFromStorage() {
-    let characterLimit;
-
-    if (localStorage.getItem("characterLimit") !== null) {
-      characterLimit = 0;
-    } else {
-      localStorage.getItem("characterLimit");
-    }
-    return characterLimit;
+  static saveGraphToStorage(object) {
+    let graph = object;
+    localStorage.setItem("graph", JSON.stringify(graph));
   }
 }
 

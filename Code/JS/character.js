@@ -1,5 +1,11 @@
 import Storage from "./storage.js";
-import { graph, alphabetStats, getCharacters, letterDensity, toggle } from "./alphabet.js";
+import {
+  graph,
+  alphabetStats,
+  getCharacters,
+  letterDensity,
+  toggle,
+} from "./alphabet.js";
 
 let output;
 const limitInput = document.querySelector(".limit-count");
@@ -19,9 +25,10 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
 const warning = document.querySelector(".limit-warning");
 
-let typing = false;
+let elapsed = false;
 let second = 1000;
 let regex = /\w+/g;
+let startCountdown;
 let string = ["Analyze your text in real-time"];
 
 theme.addEventListener("click", (event) => {
@@ -64,7 +71,6 @@ class CharacterStats {
     let total = Storage.addCharactersToStorage(totalCount);
 
     let hunna = 300;
-    let characterLimit = Storage.addLimitToStorage(hunna);
 
     spaces.addEventListener("change", (event) => {
       let isChecked = event.target.checked ? true : false;
@@ -88,7 +94,6 @@ class CharacterStats {
     let startCountdown = totalCount === 10;
     if (startCountdown) {
       this.countdown();
-      // console.log(startCountdown);
       return;
     }
   }
@@ -192,19 +197,15 @@ class CharacterStats {
 
     timeout = setInterval(() => {
       readingTime.innerText = `${countdown--} seconds`;
-      typing = true;
 
       if (countdown == 0) {
+        elapsed = true;
         clearInterval(timeout);
         readingTime.innerText = "0 seconds";
-      }
-
-      if (countdown === 0)  {
-        typing = false;
-
-        setTimeout(()  =>  {
-          alphabetStats(letterDensity(graph));
-        }, 100)
+        let saveGraph = letterDensity(graph);
+        alphabetStats(letterDensity(graph));
+        Storage.saveGraphToStorage(saveGraph)
+        return;
       }
 
       let reset = document.querySelector(".reset");
@@ -214,6 +215,11 @@ class CharacterStats {
       });
     }, 200);
   }
+
+    addGraphToDOM()  {
+      let retrieveGraph = Storage.getGraphFromStorage();
+      alphabetStats(letterDensity(retrieveGraph))
+    }
 
   resetUI() {
     this.resetStats();
@@ -252,12 +258,9 @@ class CharacterStats {
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
+    this.addGraphToDOM();
   }
 }
-
-document.addEventListener("load", () => {
-  localStorage.clear();
-});
 
 const stats = new CharacterStats();
 stats.handleEvent();
