@@ -26,9 +26,9 @@
         <h1 class="heading">Analyze your text in real-time</h1>
         <textarea
           name="input"
-          for="characters"
+          for="character-input"
           placeholder="Start typing here... (or paste some text)"
-          class="character-input"
+          id="character-input"
         ></textarea>
       <!-- limit  -->
         <div class="limit-reached">
@@ -37,18 +37,17 @@
             Limit reached! Your text exceeds 300 characters.
           </p>
         </div>
-
         <div class="showcase-data">
           <!-- (1) -->
           <div class="checkbox-contents">
-            <input type="checkbox" class="spaces" />
-            <label for="">exclude spaces</label>
+            <input type="checkbox" id="spaces"  />
+            <label for="spaces">exclude spaces</label>
           </div>
           <!-- (2) -->
 
           <div class="checkbox-contents">
-            <input type="checkbox" class="limit-check" />
-            <label for="">set character limit</label>
+            <input type="checkbox" id="limit-check" />
+            <label for="limit-check">set character limit</label>
             <input type="text" placeholder="" class="limit-count" />
             <button class="reset">Reset UI</button>
           </div>
@@ -103,12 +102,10 @@
 
       <div class="contents">
         <div class="progress-wrapper graph"></div>
-        <button class="see more-less">
-          See More<i class="fa-solid fa-chevron-down"></i>
-        </button>
       </div>
     </section>
     <script src="/Code/JS/character.js" type="module"></script>
   </body>
 </html>
+
 

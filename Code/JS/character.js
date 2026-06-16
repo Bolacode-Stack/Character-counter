@@ -6,17 +6,16 @@ import {
   getCharacters,
   letterDensity,
   button,
-  toggle
 } from "./alphabet.js";
 
 let output;
 const limitInput = document.querySelector(".limit-count");
 const limitReached = document.querySelector(".limit-reached");
-const limitCheckbox = document.querySelector(".limit-check");
-const spaces = document.querySelector(".spaces");
+const limitCheckbox = document.querySelector("#limit-check");
+const spaces = document.querySelector("#spaces");
 const sentenceCount = document.querySelector(".sentence-count");
 const wordCount = document.querySelector(".word-count");
-const characterInput = document.querySelector(".character-input");
+const characterInput = document.querySelector("#character-input");
 const readingTime = document.querySelector(".reading-time");
 const wrapper = document.querySelector(".progress-wrapper");
 const logo = document.querySelector("#logo");
@@ -229,6 +228,7 @@ class CharacterStats {
     this.resetGraph();
     this.resetUtilities();
     localStorage.clear();
+    statsParagraph.style.display = "block";
   }
 
   resetUtilities() {
@@ -251,7 +251,6 @@ class CharacterStats {
 
   resetGraph() {
     button.remove()
-    toggle.remove();
     wrapper.innerHTML = "";
     wrapper.style.height = "0px";
     statsParagraph.classList.add("view");

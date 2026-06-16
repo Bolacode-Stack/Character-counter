@@ -1,10 +1,8 @@
 let code, output;
 
-const characterInput = document.querySelector(".character-input");
+const characterInput = document.querySelector("#character-input");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
-const toggle = document.querySelector(".see");
-const icon = document.querySelector(".fa-solid");
 const limitReached = document.querySelector(".limit-reached");
 const statsParagraph = document.querySelector(".stats-paragraph");
 
@@ -41,7 +39,8 @@ function createButton(classes) {
   const button = document.createElement("button");
   button.className = classes;
   button.innerText = "See More";
-  button.appendChild(icon);
+  const icon = createIcon("fa-solid fa-chevron-down");
+  button.append(icon);
   return button;
 }
 
@@ -51,7 +50,8 @@ function createIcon(classes) {
   return icon;
 }
 
-let button = createButton("see more-less");
+let button = createButton("see more-less toggle");
+const icon = createIcon("fa-solid fa-chevron-down");
 
 export function alphabetStats(object) {
   let bars = [];
@@ -145,14 +145,14 @@ export function letterDensity(object = graph) {
   return object.sort((a, b) => a.count < b.count);
 }
 
+// letterDensity();
+
 function toggleGraph() {
-  const icon = createIcon("fa-solid fa-chevron-down");
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
     button.textContent = "See Less";
     icon.classList.replace("fa-chevron-down", "fa-chevron-up");
     button.append(icon);
-    console.log("Toggling");
   } else if (wrapper.innerHTML !== "") {
     wrapper.style.height = "200px";
     button.textContent = "See More";
@@ -164,7 +164,6 @@ function toggleGraph() {
 button.addEventListener("click", toggleGraph);
 
 document.addEventListener("DOMContentLoaded", () => {
-  toggle.remove();
 
   if (characterInput.value == "") {
     limitReached.remove();
@@ -175,4 +174,4 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-export { contents, graph, button, toggle };
+export { contents, graph, button };
