@@ -343,9 +343,10 @@ input[type="checkbox"] {
 .see {
   outline: none;
   display: flex;
+  border: none;
   text-align: left;
   cursor: pointer;
-  border: none;
+  visibility: visible;
   color: var(--grey-2);
   font-family: inherit;
   align-items: center;

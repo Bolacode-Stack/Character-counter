@@ -1,10 +1,12 @@
 import Storage from "./storage.js";
 import {
+  contents, 
   graph,
   alphabetStats,
   getCharacters,
   letterDensity,
-  toggle,
+  button,
+  toggle
 } from "./alphabet.js";
 
 let output;
@@ -204,7 +206,7 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         let saveGraph = letterDensity(graph);
         alphabetStats(letterDensity(graph));
-        Storage.saveGraphToStorage(saveGraph)
+        let save = Storage.saveGraphToStorage(saveGraph);
         return;
       }
 
@@ -219,6 +221,7 @@ class CharacterStats {
     addGraphToDOM()  {
       let retrieveGraph = Storage.getGraphFromStorage();
       alphabetStats(letterDensity(retrieveGraph))
+      console.log(retrieveGraph)
     }
 
   resetUI() {
@@ -247,6 +250,7 @@ class CharacterStats {
   }
 
   resetGraph() {
+    button.remove()
     toggle.remove();
     wrapper.innerHTML = "";
     wrapper.style.height = "0px";
@@ -258,7 +262,7 @@ class CharacterStats {
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
-    this.addGraphToDOM();
+    this.addGraphToDOM()
   }
 }
 

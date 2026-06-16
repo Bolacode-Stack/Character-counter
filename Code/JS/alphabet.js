@@ -1,8 +1,10 @@
+let code, output;
+
 const characterInput = document.querySelector(".character-input");
 const wrapper = document.querySelector(".progress-wrapper");
 const contents = document.querySelector(".contents");
-const icon = document.querySelector(".fa-solid");
 const toggle = document.querySelector(".see");
+const icon = document.querySelector(".fa-solid");
 const limitReached = document.querySelector(".limit-reached");
 const statsParagraph = document.querySelector(".stats-paragraph");
 
@@ -35,10 +37,25 @@ let graph = [
   { alphabet: "z", count: 0 },
 ];
 
-let code, logout;
+function createButton(classes) {
+  const button = document.createElement("button");
+  button.className = classes;
+  button.innerText = "See More";
+  button.appendChild(icon);
+  return button;
+}
+
+function createIcon(classes) {
+  const icon = document.createElement("i");
+  icon.className = classes;
+  return icon;
+}
+
+let button = createButton("see more-less");
+
 export function alphabetStats(object) {
   let bars = [];
-
+  
   let filteredGraph = object.filter((brace) => brace.count !== 0);
 
   filteredGraph.forEach((brace) => {
@@ -62,7 +79,7 @@ export function alphabetStats(object) {
       bar.classList.add("smooth");
       let count = Math.min(brace.count, 100);
       bar.style.width = `${count}%`;
-    }, 1500);
+    }, 1000);
 
     progress.appendChild(bar);
 
@@ -92,7 +109,7 @@ export function alphabetStats(object) {
       if (appended) {
         wrapper.style.height = "200px";
         statsParagraph.style.display = "none";
-        contents.appendChild(toggle);
+        contents.append(button);
       } else if (!appended) {
         wrapper.classList.remove("height-limit");
         statsParagraph.classList.remove("hide");
@@ -121,7 +138,7 @@ function alphabetCounter(alphabet) {
   return count;
 }
 
-export function letterDensity(object) {
+export function letterDensity(object = graph) {
   object.forEach((brace) => {
     brace["count"] = alphabetCounter(brace.alphabet);
   });
@@ -129,20 +146,22 @@ export function letterDensity(object) {
 }
 
 function toggleGraph() {
+  const icon = createIcon("fa-solid fa-chevron-down");
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
     wrapper.style.height = wrapper.scrollHeight + "px";
-    toggle.textContent = "See Less";
+    button.textContent = "See Less";
     icon.classList.replace("fa-chevron-down", "fa-chevron-up");
-    toggle.append(icon);
+    button.append(icon);
+    console.log("Toggling");
   } else if (wrapper.innerHTML !== "") {
     wrapper.style.height = "200px";
-    toggle.textContent = "See More";
+    button.textContent = "See More";
     icon.classList.replace("fa-chevron-up", "fa-chevron-down");
-    toggle.append(icon);
+    button.append(icon);
   }
 }
 
-toggle.addEventListener("click", toggleGraph);
+button.addEventListener("click", toggleGraph);
 
 document.addEventListener("DOMContentLoaded", () => {
   toggle.remove();
@@ -150,6 +169,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (characterInput.value == "") {
     limitReached.remove();
   }
+
+  if (wrapper.innerHTML == "") {
+    button.remove();
+  }
 });
 
-export { graph, toggle };
+export { contents, graph, button, toggle };
