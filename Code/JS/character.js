@@ -1,6 +1,6 @@
 import Storage from "./storage.js";
 import {
-  contents, 
+  contents,
   graph,
   alphabetStats,
   getCharacters,
@@ -205,7 +205,7 @@ class CharacterStats {
         readingTime.innerText = "0 seconds";
         let saveGraph = letterDensity(graph);
         alphabetStats(letterDensity(graph));
-        let save = Storage.saveGraphToStorage(saveGraph);
+        Storage.saveGraphToStorage(saveGraph);
         return;
       }
 
@@ -217,11 +217,11 @@ class CharacterStats {
     }, 200);
   }
 
-    addGraphToDOM()  {
-      let retrieveGraph = Storage.getGraphFromStorage();
-      alphabetStats(letterDensity(retrieveGraph))
-      console.log(retrieveGraph)
-    }
+  addGraphToDOM() {
+    let newGraph = Storage.getGraphFromStorage();
+    alphabetStats(letterDensity(newGraph));
+    console.log(newGraph);
+  }
 
   resetUI() {
     this.resetStats();
@@ -250,7 +250,7 @@ class CharacterStats {
   }
 
   resetGraph() {
-    button.remove()
+    button.remove();
     wrapper.innerHTML = "";
     wrapper.style.height = "0px";
     statsParagraph.classList.add("view");
@@ -261,7 +261,7 @@ class CharacterStats {
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
-    this.addGraphToDOM()
+    this.addGraphToDOM();
   }
 }
 

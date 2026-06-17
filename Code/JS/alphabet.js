@@ -50,7 +50,7 @@ function createIcon(classes) {
   return icon;
 }
 
-let button = createButton("see more-less toggle");
+let button = createButton("see more-less");
 const icon = createIcon("fa-solid fa-chevron-down");
 
 export function alphabetStats(object) {
