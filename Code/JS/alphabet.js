@@ -138,14 +138,12 @@ function alphabetCounter(alphabet) {
   return count;
 }
 
-export function letterDensity(object = graph) {
+export function letterDensity(object = graph)  {
   object.forEach((brace) => {
     brace["count"] = alphabetCounter(brace.alphabet);
   });
   return object.sort((a, b) => a.count < b.count);
 }
-
-// letterDensity();
 
 function toggleGraph() {
   if (parseInt(wrapper.style.height) !== wrapper.scrollHeight) {
@@ -164,7 +162,6 @@ function toggleGraph() {
 button.addEventListener("click", toggleGraph);
 
 document.addEventListener("DOMContentLoaded", () => {
-
   if (characterInput.value == "") {
     limitReached.remove();
   }

@@ -1,4 +1,6 @@
-import Storage from "./storage.js";
+"use strict";
+let code, output;
+
 import {
   contents,
   graph,
@@ -7,8 +9,8 @@ import {
   letterDensity,
   button,
 } from "./alphabet.js";
+import Storage from "./storage.js";
 
-let output;
 const limitInput = document.querySelector(".limit-count");
 const limitReached = document.querySelector(".limit-reached");
 const limitCheckbox = document.querySelector("#limit-check");
@@ -26,10 +28,8 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
 const warning = document.querySelector(".limit-warning");
 
-let elapsed = false;
 let second = 1000;
 let regex = /\w+/g;
-let startCountdown;
 let string = ["Analyze your text in real-time"];
 
 theme.addEventListener("click", (event) => {
@@ -43,8 +43,16 @@ theme.addEventListener("click", (event) => {
   }
 });
 
+let fire,
+  elapsed = 0;
+
+function getValue(value) {
+  return () => value;
+}
+
 class CharacterStats {
-  constructor() {
+  constructor(count) {
+    this.totalCount = count;
     this.render();
     this.loadEventListeners();
   }
@@ -93,10 +101,7 @@ class CharacterStats {
     }
 
     let startCountdown = totalCount === 10;
-    if (startCountdown) {
-      this.countdown();
-      return;
-    }
+    let code = this.countdown(startCountdown);
   }
 
   setLimit() {
@@ -192,29 +197,29 @@ class CharacterStats {
     });
   }
 
-  countdown() {
-    let timeout,
-      countdown = 60;
+  countdown(fire = false) {
+    let countdown = 60;
 
-    timeout = setInterval(() => {
-      readingTime.innerText = `${countdown--} seconds`;
+    if (fire) {
+      let timeout = setInterval(() => {
+        readingTime.innerText = `${countdown--} seconds`;
 
-      if (countdown == 0) {
-        elapsed = true;
-        clearInterval(timeout);
-        readingTime.innerText = "0 seconds";
-        let saveGraph = letterDensity(graph);
-        alphabetStats(letterDensity(graph));
-        Storage.saveGraphToStorage(saveGraph);
-        return;
-      }
+        if (countdown <= 0) {
+          clearInterval(timeout);
+          readingTime.innerText = "0 seconds";
+          let saveGraph = letterDensity(graph);
+          Storage.saveGraphToStorage(saveGraph);
+        }
 
-      let reset = document.querySelector(".reset");
-      reset.addEventListener("click", () => {
-        this.resetUI();
-        clearInterval(timeout);
-      });
-    }, 200);
+        countdown <= 0 ? this.addGraphToDOM() : undefined;
+
+        let reset = document.querySelector(".reset");
+        reset.addEventListener("click", () => {
+          this.resetUI();
+          clearInterval(timeout);
+        });
+      }, 200);
+    }
   }
 
   addGraphToDOM() {
@@ -265,5 +270,5 @@ class CharacterStats {
   }
 }
 
-const stats = new CharacterStats();
+const stats = new CharacterStats(0);
 stats.handleEvent();

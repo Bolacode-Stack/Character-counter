@@ -67,8 +67,7 @@ class Storage {
   }
 
   static saveGraphToStorage(object) {
-    let graph = object;
-    localStorage.setItem("graph", JSON.stringify(graph));
+    localStorage.setItem("graph", JSON.stringify(object));
   }
 }
 
