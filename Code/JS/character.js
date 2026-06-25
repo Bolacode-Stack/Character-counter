@@ -1,15 +1,23 @@
-import Storage from "./storage.js";
-import getCharacters from "./alphabet.js";
-import { graph, alphabetStats, letterDensity, toggle } from "./alphabet.js";
+"use strict";
+let code, output;
 
-let output;
+import {
+  contents,
+  graph,
+  alphabetStats,
+  getCharacters,
+  letterDensity,
+  button,
+} from "./alphabet.js";
+import Storage from "./storage.js";
+
 const limitInput = document.querySelector(".limit-count");
 const limitReached = document.querySelector(".limit-reached");
-const limitCheckbox = document.querySelector(".limit-check");
-const spaces = document.querySelector(".spaces");
+const limitCheckbox = document.querySelector("#limit-check");
+const spaces = document.querySelector("#spaces");
 const sentenceCount = document.querySelector(".sentence-count");
 const wordCount = document.querySelector(".word-count");
-const characterInput = document.querySelector(".character-input");
+const characterInput = document.querySelector("#character-input");
 const readingTime = document.querySelector(".reading-time");
 const wrapper = document.querySelector(".progress-wrapper");
 const logo = document.querySelector("#logo");
@@ -20,7 +28,6 @@ const statsParagraph = document.querySelector(".stats-paragraph");
 const resetUI = document.querySelector(".reset");
 const warning = document.querySelector(".limit-warning");
 
-let typing = false;
 let second = 1000;
 let regex = /\w+/g;
 let string = ["Analyze your text in real-time"];
@@ -36,8 +43,16 @@ theme.addEventListener("click", (event) => {
   }
 });
 
+let fire,
+  elapsed = 0;
+
+function getValue(value) {
+  return () => value;
+}
+
 class CharacterStats {
-  constructor() {
+  constructor(count) {
+    this.totalCount = count;
     this.render();
     this.loadEventListeners();
   }
@@ -65,7 +80,6 @@ class CharacterStats {
     let total = Storage.addCharactersToStorage(totalCount);
 
     let hunna = 300;
-    let characterLimit = Storage.addLimitToStorage(hunna);
 
     spaces.addEventListener("change", (event) => {
       let isChecked = event.target.checked ? true : false;
@@ -87,11 +101,7 @@ class CharacterStats {
     }
 
     let startCountdown = totalCount === 10;
-    if (startCountdown) {
-      this.countdown();
-      // console.log(startCountdown);
-      return;
-    }
+    let code = this.countdown(startCountdown);
   }
 
   setLimit() {
@@ -187,25 +197,35 @@ class CharacterStats {
     });
   }
 
-  countdown() {
-    let timeout,
-      countdown = 60;
-    timeout = setInterval(() => {
-      readingTime.innerText = `${countdown--} seconds`;
+  countdown(fire = false) {
+    let countdown = 60;
 
-      if (countdown == 0) {
-        clearInterval(timeout);
-        readingTime.innerText = "0 seconds";
-        getCharacters();
-        alphabetStats(letterDensity(graph));
-      }
+    if (fire) {
+      let timeout = setInterval(() => {
+        readingTime.innerText = `${countdown--} seconds`;
 
-      let reset = document.querySelector(".reset");
-      reset.addEventListener("click", () => {
-        this.resetUI();
-        clearInterval(timeout);
-      });
-    }, 200);
+        if (countdown <= 0) {
+          clearInterval(timeout);
+          readingTime.innerText = "0 seconds";
+          let saveGraph = letterDensity(graph);
+          Storage.saveGraphToStorage(saveGraph);
+        }
+
+        countdown <= 0 ? this.addGraphToDOM() : undefined;
+
+        let reset = document.querySelector(".reset");
+        reset.addEventListener("click", () => {
+          this.resetUI();
+          clearInterval(timeout);
+        });
+      }, 200);
+    }
+  }
+
+  addGraphToDOM() {
+    let newGraph = Storage.getGraphFromStorage();
+    alphabetStats(letterDensity(newGraph));
+    console.log(newGraph);
   }
 
   resetUI() {
@@ -213,6 +233,7 @@ class CharacterStats {
     this.resetGraph();
     this.resetUtilities();
     localStorage.clear();
+    statsParagraph.style.display = "block";
   }
 
   resetUtilities() {
@@ -234,7 +255,7 @@ class CharacterStats {
   }
 
   resetGraph() {
-    toggle.remove();
+    button.remove();
     wrapper.innerHTML = "";
     wrapper.style.height = "0px";
     statsParagraph.classList.add("view");
@@ -245,8 +266,9 @@ class CharacterStats {
     this.displayTotalCharacters();
     this.displayWordCount();
     this.displaySentenceCount();
+    this.addGraphToDOM();
   }
 }
 
-const stats = new CharacterStats();
+const stats = new CharacterStats(0);
 stats.handleEvent();
